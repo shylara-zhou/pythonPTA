@@ -1,0 +1,17 @@
+
+num=int(input())
+
+degreelist=[]
+fail=0
+sum=0
+degreelist=list(map(int,input().split()))
+print("Max:",max(degreelist))
+print("Min:",min(degreelist))
+for degree in degreelist:
+    sum+=degree
+    if degree<60:
+        fail+=1
+ave=sum/num
+print("Ave: "+"{:.1f}".format(ave))
+print("Fail:",fail)
+
