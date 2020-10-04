@@ -1,0 +1,6 @@
+simport sys
+for i in range(sys.maxsize**10):
+
+    if(i%5==1 and i%6==5 and i%7==4 and i%11==10):
+        print(i)
+        break
