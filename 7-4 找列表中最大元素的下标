@@ -1,0 +1,11 @@
+numtup=eval(input())
+big=0
+count=0
+index=0
+for num in numtup:
+    if (num>big):
+        big=num
+for i in numtup:
+    if(i==big):
+       print(index)
+    index+=1
