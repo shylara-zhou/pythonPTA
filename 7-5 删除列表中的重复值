@@ -1,0 +1,6 @@
+l1 = eval(input())
+#  直接遍历列表删除
+for el in l1[:]:
+    if l1.count(el) > 1:
+        l1.remove(el) # 没有问题,可以去重,但是无法保留原有的顺序
+print(l1)   
