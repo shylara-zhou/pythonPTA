@@ -1,0 +1,7 @@
+from collections import Counter
+a=input()
+b=Counter(a)
+b.items()
+c=str(b.most_common(1))
+out=c.replace('[','').replace(']','')
+print(out)
