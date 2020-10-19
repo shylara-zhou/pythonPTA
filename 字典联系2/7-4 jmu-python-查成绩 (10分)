@@ -1,0 +1,23 @@
+coulist=[]
+deglist=[]
+while 1:
+    s=input()
+    if s:
+        x=s.split(":")
+        coulist.append(x[0])
+        deglist.append(x[1])
+    else:
+        break
+
+        
+zipped=zip(coulist,deglist)
+dic1=dict(zipped)
+## flag =0
+s=input("请输入要查询的课程：\n")
+if s in dic1:
+    print(dic1[s])
+else:
+    print("没有该门课程")
+
+
+
