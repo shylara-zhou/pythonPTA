@@ -1,0 +1,92 @@
+import csv
+import re
+from collections import defaultdict
+from multiprocessing import context
+
+import matplotlib.pyplot as plt
+from pylab import *
+mpl.rcParams['font.sans-serif'] = ['SimHei']
+
+dic=defaultdict(list)
+pici_list=[]
+
+year_list=[]
+chengji_list=[]
+with open("集美大学各省录取分数.csv", "r", encoding='GBK',newline='') as filereader:
+
+    filereader=csv.reader(filereader)
+    header = next(filereader)
+    #filewriter.writerow(header)
+    for row_list in filereader:
+        pro = str(row_list[0].strip())
+        chengji = str(row_list[6].strip())
+        year = str(row_list[7].strip())
+        if pro == "福建":
+            pici=str(row_list[1]).strip()
+            pattern = re.compile(r'(.*师范.*全省.*)', re.I)
+            pattern2 = re.compile(r'(.*师范.*厦门.*)', re.I)
+            pattern3 = re.compile(r'.*提前.*航海.*')
+            pattern4 = re.compile(r'.*闽台合作.*')
+            if pattern.search(pici):
+                pici = "师范类(面向全省)"
+            elif pattern2.search(pici):
+                pici = "师范类(面向厦门)"
+            elif pattern3.search(pici):
+                pici = "提前批(航海类)"
+            elif pattern4.search(pici):
+                pici = "本一批(闽台合作)"
+            if str(row_list[2].strip()) =="理工":
+                pici = str(pici).strip() + "-" + str(row_list[2].strip())
+
+                if pici not in pici_list:
+                    pici_list.append(pici)
+                    #dic[year]=chengji
+
+
+
+                    dic[pici].append("{0}:".format(year)+ chengji)
+                    #print(dic[pici])
+
+                else:
+                    dic[pici].append("{0}:".format(year)+ chengji)
+
+    plt.figure(figsize=(6,4))
+    k=0
+    l=['go-','rs--','b*','ch--','mD--','y','k*--','k','bD--','gD','rs--','b*','ch--','mD--','y','bD','k','w','gD']
+    tempdic = {}
+    for i in pici_list:
+        k+=1
+        chengji_list=[]
+        year_list=[]
+
+        for word in dic[i]:
+
+            n=word.index(":")
+            year=word[:n]
+            year_list.append(int(year))
+            chengji=word[n+1:]
+            chengji_list.append(float(chengji))
+            print(year_list)
+
+        for m in range(len(year_list)-1):
+            for j in range(len(year_list)-1-m):
+                if year_list[j]>year_list[j+1]:
+                    a=year_list[j]
+                    year_list[j]=year_list[j+1]
+                    year_list[j+1]=a
+                    a=chengji_list[j]
+                    chengji_list[j]=chengji_list[j+1]
+                    chengji_list[j+1]=a
+        print(chengji_list)
+        print(year_list)
+
+
+
+        plt.plot(year_list,chengji_list,l[k],label=i,linewidth=2)
+    plt.xticks(np.linspace(2016, 2018,3))
+    plt.axis([2016, 2018, 400, 600])
+
+
+    plt.legend()
+    plt.savefig("折线图.jpg",bbox_inches="tight")
+    plt.show()
